@@ -1,0 +1,5 @@
+---
+
+- name: update-icon-cache
+  command: gtk-update-icon-cache -f -t /usr/share/icons/hicolor
+

@@ -1,0 +1,29 @@
+---
+
+- include: vscode.yml
+  tags:
+    - vscode
+
+- include: java.yml
+  tags:
+    - java
+
+- include: jetbrains-toolbox.yml
+  tags:
+    - jetbrains
+
+- include: docker.yml
+  tags:
+    - docker
+
+- include: postman.yml
+  tags:
+    - postman
+
+- include: kubernetes.yml
+  tags:
+    - kubernetes
+
+- include: zoom.yml
+  tags:
+    - zoom

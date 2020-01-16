@@ -1,0 +1,7 @@
+---
+
+- name: Install JDK
+  apt:
+    name: openjdk-13-jdk
+    state: present
+

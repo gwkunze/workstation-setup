@@ -1,0 +1,55 @@
+---
+# Parameters:
+#   dl_name        - Name of what we're downloading
+#   dl_base        - Base directory to download to
+#   dl_url         - Download URL
+#   dl_link        - Location to link to
+#   dl_unpack      - Unpack the download (boolean)
+#   dl_unpack_opts - Unpack options (extra_args for unarchive)
+#   dl_link_to     - What to link to (if unpacked)
+
+- name: "Ensure {{ dl_base }} exists"
+  file:
+    name: "{{ dl_base }}"
+    state: directory
+
+- name: "Get ETAG of {{ dl_name }} from {{ dl_url }}"
+  uri:
+    url: "{{ dl_url }}"
+    method: HEAD
+  register: dl_url_stat
+
+- name: "Ensure {{ dl_base }}/{{ dl_url_stat.etag | replace('\"', '') }} exists"
+  file:
+    name: "{{ dl_base }}/{{ dl_url_stat.etag | replace('\"', '') }}"
+    state: directory
+
+- name: "Download {{ dl_name }}"
+  get_url:
+    dest: "{{ dl_base }}/{{ dl_url_stat.etag | replace('\"', '') }}/{{ dl_name }}"
+    url: "{{ dl_url }}"
+    mode: 0755
+  when: dl_unpack is undefined or dl_unpack == False
+
+- name: "Unpack {{ dl_name }}"
+  unarchive:
+    remote_src: true
+    src: "{{ dl_url }}"
+    dest: "{{ dl_base }}/{{ dl_url_stat.etag | replace('\"', '') }}"
+    creates: "{{ dl_base }}/{{ dl_url_stat.etag | replace('\"', '') }}/{{ dl_link_to }}"
+    extra_opts: "{{ dl_unpack_opts | default([]) }}"
+  when: dl_unpack is defined and dl_unpack == True
+
+- name: "Link to {{ dl_name }}"
+  file:
+    src: "{{ dl_base }}/{{ dl_url_stat.etag | replace('\"', '') }}/{{ dl_name}}"
+    dest: "{{ dl_link }}"
+    state: link
+  when: dl_link is defined and (dl_unpack is undefined or dl_unpack == False)
+
+- name: "Link to {{ dl_base }}/{{ dl_url_stat.etag | replace('\"', '') }}/{{ dl_link_to }}"
+  file:
+    src: "{{ dl_base }}/{{ dl_url_stat.etag | replace('\"', '') }}/{{ dl_link_to}}"
+    dest: "{{ dl_link }}"
+    state: link
+  when: dl_link is defined and (dl_unpack is defined and dl_unpack == True)

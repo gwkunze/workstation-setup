@@ -1,0 +1,34 @@
+---
+
+- name: Create postman directory
+  file:
+    name: /opt/postman
+    state: directory
+
+- name: Download and unpack Postman
+  unarchive:
+    remote_src: true
+    src: https://dl.pstmn.io/download/latest/linux64
+    dest: /opt/postman
+    creates: /opt/postman/Postman
+    extra_opts:
+      - --strip-components=1
+
+- name: Link to usr/bin
+  file:
+    src: /opt/postman/Postman
+    dest: /usr/bin/postman
+    state: link
+
+- name: Copy icon
+  copy:
+    src: postman/postman.png
+    dest: /usr/share/icons/hicolor/128x128/apps/postman.png
+  notify:
+    - update-icon-cache
+
+- name: Copy Desktop Manifest
+  copy:
+    src: postman/postman.desktop
+    dest: /usr/share/applications/postman.desktop
+

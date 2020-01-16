@@ -1,0 +1,15 @@
+---
+
+- name: Include vars
+  include_vars:
+    depth: 2
+    dir: "{{ ansible_env.HOME }}/.config"
+    files_matching: "^git_repos.*\\.yaml$"
+    name: git_repos
+  ignore_errors: yes
+
+- include: repo_dir.yml
+  vars:
+    repo_dir: "{{ item.key }}"
+    repos: "{{ item.value }}"
+  loop: "{{ git_repos|dict2items }}"

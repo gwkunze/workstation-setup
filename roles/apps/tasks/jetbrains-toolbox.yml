@@ -1,0 +1,29 @@
+---
+
+- name: Get Latest URL
+  shell: "wget \"https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release\" -O -| grep -o \"https://download.jetbrains.com/toolbox/jetbrains-toolbox-[0-9.]*.tar.gz\" | head -n 1"
+  register: toolboxUrl
+
+- name: Create destination directory
+  file:
+    path: /opt/jetbrains-toolbox
+    state: directory
+
+- name: Download Jetbrains Toolbox Tar
+  get_url:
+    url: "{{ toolboxUrl.stdout }}"
+    dest: /tmp/jetbrains-toolbox.tar.gz
+
+- name: Unpack JetBrains Toolbox
+  unarchive:
+    src: /tmp/jetbrains-toolbox.tar.gz
+    dest: /opt/jetbrains-toolbox
+    extra_opts:
+      - --strip-components=1
+
+- name: Link to Toolbox
+  file:
+    src: /opt/jetbrains-toolbox/jetbrains-toolbox
+    dest: /usr/bin/jetbrains-toolbox
+    state: link
+

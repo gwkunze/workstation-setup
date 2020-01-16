@@ -1,0 +1,93 @@
+---
+
+# kubectl
+- name: Install Kubectl
+  get_url:
+    url: "https://storage.googleapis.com/kubernetes-release/release/{{ lookup('url', 'https://storage.googleapis.com/kubernetes-release/release/stable.txt') }}/bin/linux/amd64/kubectl"
+    dest: /usr/local/bin/kubectl
+    mode: 0755
+    owner: root
+    group: root
+
+# kubectl bash completion
+- name: Enable Kubernetes Bash Completion
+  lineinfile:
+    path: "{{ home_dir }}/.bashrc"
+    regexp: "kubectl completion bash"
+    line: "source <(kubectl completion bash)"
+
+# kubectx
+- name: Install Kubectx
+  apt:
+    name: kubectx
+    state: present
+
+# minikube
+- include: download_with_etag.yml
+  vars:
+    dl_name: minikube
+    dl_base: /opt/minikube
+    dl_url: "{{ minikube_url }}"
+    dl_link: /usr/local/bin/minikube
+
+# kail
+- name: Create Kail dir
+  file:
+    path: "/opt/kail/{{ kail_url | hash('sha256') }}"
+    state: directory
+
+- name: Unpack Kail
+  unarchive:
+    remote_src: true
+    src: "{{ kail_url }}"
+    dest: "/opt/kail/{{ kail_url | hash('sha256') }}"
+    creates: "/opt/kail/{{ kail_url | hash('sha256') }}/kail"
+
+- name: Link Kail
+  file:
+    src: "/opt/kail/{{ kail_url | hash('sha256') }}/kail"
+    dest: /usr/local/bin/kail
+    state: link
+
+# helm 2
+- name: "Create /opt/helm2/{{ helm2_url | hash('sha256') }}"
+  file:
+    path: "/opt/helm2/{{ helm2_url | hash('sha256') }}"
+    state: directory
+
+- name: Install Helm2 CLI
+  unarchive:
+    remote_src: yes
+    src: "{{ helm2_url }}"
+    dest: "/opt/helm2/{{ helm2_url | hash('sha256') }}"
+    extra_opts:
+      - --strip-components=1
+    creates: "/opt/helm2/{{ helm2_url | hash('sha256') }}/helm"
+
+- name: Link Helm2 CLI
+  file:
+    dest: /usr/local/bin/helm
+    src: "/opt/helm2/{{ helm2_url | hash('sha256') }}/helm"
+    state: link
+
+# helm 3
+- name: "Create /opt/helm3/{{ helm3_url | hash('sha256') }}"
+  file:
+    path: "/opt/helm3/{{ helm3_url | hash('sha256') }}"
+    state: directory
+
+- name: Install Helm3 CLI
+  unarchive:
+    remote_src: yes
+    src: "{{ helm3_url }}"
+    dest: "/opt/helm3/{{ helm3_url | hash('sha256') }}"
+    extra_opts:
+      - --strip-components=1
+    creates: "/opt/helm3/{{ helm3_url | hash('sha256') }}/helm"
+
+- name: Link Helm3 CLI
+  file:
+    dest: /usr/local/bin/helm3
+    src: "/opt/helm3/{{ helm3_url | hash('sha256') }}/helm"
+    state: link
+

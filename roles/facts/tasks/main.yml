@@ -1,0 +1,11 @@
+---
+
+- name: Get current user homedir
+  getent:
+    database: passwd
+    key: "{{ ansible_env.SUDO_USER }}"
+    split: ":"
+
+- set_fact:
+    home_dir: "{{ getent_passwd[ansible_env.SUDO_USER][4] }}"
+

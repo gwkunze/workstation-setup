@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  become: yes
+  become_user: "root"
+  roles:
+    - role: facts
+      tags:
+        - always
+    # TODO: Dotfiles
+    - role: system
+      tags:
+        - system
+    - role: apps
+      tags:
+        - apps
+
+- hosts: localhost
+  roles:
+    - role: user
+      tags: user

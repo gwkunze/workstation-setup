@@ -1,0 +1,13 @@
+---
+
+- include: download_with_etag.yml
+  vars:
+    dl_name: zoom
+    dl_base: /opt/zoom
+    dl_url: "{{ zoom_url }}"
+    dl_link: /opt/zoom/zoom.deb
+
+- name: Install Zoom deb
+  apt:
+    deb: /opt/zoom/zoom.deb
+    state: present

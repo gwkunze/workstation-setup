@@ -1,0 +1,24 @@
+---
+
+- name: Install standard packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3-pip
+    - python3-virtualenv
+    - jq
+    - gpg
+    - hub
+    - msttcorefonts
+    - fzf
+
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    executable: pip3
+  loop:
+    - awscli
+    - yq
+

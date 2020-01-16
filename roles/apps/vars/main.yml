@@ -1,0 +1,9 @@
+
+minikube_url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+
+kail_url: https://github.com/boz/kail/releases/download/v0.12.0/kail_0.12.0_linux_amd64.tar.gz
+
+helm2_url: https://get.helm.sh/helm-v2.14.3-linux-amd64.tar.gz
+helm3_url: https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz
+
+zoom_url: https://zoom.us/client/latest/zoom_amd64.deb

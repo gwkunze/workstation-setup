@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Postman
+Type=Application
+Exec=postman
+Icon=postman
+Comment=The most complete toolchain for API developers
+Categories=Development;
+Keywords=Postman;API;REST;Testing;
+StartupNotify=true
+Terminal=false
+StartupWMClass=postman
