@@ -27,3 +27,11 @@
 - include: zoom.yml
   tags:
     - zoom
+
+- include: chrome.yml
+  tags:
+    - chrome
+
+- include: directory-studio.yml
+  tags:
+    - directory-studio

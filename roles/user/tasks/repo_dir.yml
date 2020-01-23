@@ -5,14 +5,32 @@
     path: "{{ ansible_env.HOME }}/src/{{ repo_dir }}"
     state: directory
 
-- debug: var=repos
-
 - name: "Clone repo {{ repo.name }} to {{ repo_dir }}"
   git:
     accept_hostkey: true
     dest: "{{ ansible_env.HOME }}/src/{{ repo_dir }}/{{ repo.name }}"
     repo: "{{ repo.repo }}"
     update: false
-  loop: "{{ repos }}"
+  loop: "{{ config.repos }}"
+  loop_control:
+    loop_var: repo
+
+- name: "Set username on repo"
+  git_config:
+    name: user.name
+    value: "{{ config.username }}"
+    scope: local
+    repo: "{{ ansible_env.HOME }}/src/{{ repo_dir }}/{{ repo.name }}"
+  loop: "{{ config.repos }}"
+  loop_control:
+    loop_var: repo
+
+- name: "Set email on repo"
+  git_config:
+    name: user.email
+    value: "{{ config.email }}"
+    scope: local
+    repo: "{{ ansible_env.HOME }}/src/{{ repo_dir }}/{{ repo.name }}"
+  loop: "{{ config.repos }}"
   loop_control:
     loop_var: repo

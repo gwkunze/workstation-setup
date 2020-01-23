@@ -7,3 +7,5 @@ helm2_url: https://get.helm.sh/helm-v2.14.3-linux-amd64.tar.gz
 helm3_url: https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz
 
 zoom_url: https://zoom.us/client/latest/zoom_amd64.deb
+
+apache_directory_studio_url: http://apache.cs.uu.nl/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz

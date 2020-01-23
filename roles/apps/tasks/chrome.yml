@@ -1,0 +1,16 @@
+---
+
+- name: Ensure Chrome dir exists
+  file:
+    path: /opt/chrome
+    state: directory
+
+- name: Download Chrome Deb
+  get_url:
+    url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    dest: /opt/chrome/google-chrome-stable_current_amd64.deb
+
+- name: Install Chrome
+  apt:
+    deb: /opt/chrome/google-chrome-stable_current_amd64.deb
+    state: present

@@ -11,5 +11,6 @@
 - include: repo_dir.yml
   vars:
     repo_dir: "{{ item.key }}"
-    repos: "{{ item.value }}"
-  loop: "{{ git_repos|dict2items }}"
+    config: "{{ item.value }}"
+  loop: "{{ git_repos|default({})|dict2items }}"
+

@@ -1,0 +1,37 @@
+---
+
+
+- name: Ensure Apache Directory Studio dir exists
+  file:
+    path: /opt/apache-directory-studio
+    state: directory
+
+- name: Download Apache Directory Studio TAR
+  get_url:
+    url: "{{ apache_directory_studio_url }}"
+    dest: /opt/apache-directory-studio/apache-directory-studio-2.0.0.tar.gz
+
+- name: Unpack ADS
+  unarchive:
+      src: /opt/apache-directory-studio/apache-directory-studio-2.0.0.tar.gz
+      dest: /opt
+      creates: /opt/ApacheDirectoryStudio/artifacts.xml
+
+- name: Link to ADS
+  file:
+    src: /opt/ApacheDirectoryStudio/ApacheDirectoryStudio
+    dest: /usr/bin/apache-directory-studio
+    state: link
+
+- name: Copy icon
+  copy:
+    remote_src: true
+    src: /opt/ApacheDirectoryStudio/icon.xpm
+    dest: /usr/share/icons/hicolor/48x48/apps/apache-directory-studio.xpm
+  notify:
+    - update-icon-cache
+
+- name: Copy Desktop Manifest
+  copy:
+    src: apache-directory-studio/apache-directory-studio.desktop
+    dest: /usr/share/applications/apache-directory-studio.desktop

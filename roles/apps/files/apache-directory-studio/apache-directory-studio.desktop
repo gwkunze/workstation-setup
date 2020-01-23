@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Apache Directory Studio
+Type=Application
+Exec=apache-directory-studio
+Icon=apache-directory-studio
+Comment=LDAP Adminstration
+Categories=Development;
+Keywords=LDAP;Apache;Directory;
+StartupNotify=true
+Terminal=false
+StartupWMClass=apache-directory-studio

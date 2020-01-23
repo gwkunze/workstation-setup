@@ -9,15 +9,12 @@
     path: /opt/jetbrains-toolbox
     state: directory
 
-- name: Download Jetbrains Toolbox Tar
-  get_url:
-    url: "{{ toolboxUrl.stdout }}"
-    dest: /tmp/jetbrains-toolbox.tar.gz
-
 - name: Unpack JetBrains Toolbox
   unarchive:
-    src: /tmp/jetbrains-toolbox.tar.gz
+    remote_src: true
+    src: "{{ toolboxUrl.stdout }}"
     dest: /opt/jetbrains-toolbox
+    creates: /opt/jetbrains-toolbox/jetbrains-toolbox
     extra_opts:
       - --strip-components=1
 
@@ -27,3 +24,9 @@
     dest: /usr/bin/jetbrains-toolbox
     state: link
 
+- name: Ensure IntelliJ projects get enough inotify watches
+  sysctl:
+    name: fs.inotify.max_user_watches
+    value: 524288
+    state: present
+    sysctl_file: /etc/sysctl.d/intellij_inotify.conf
