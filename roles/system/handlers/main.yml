@@ -1,0 +1,9 @@
+---
+
+- name: restart-bluetooth
+  service:
+    name: bluetooth
+    state: restarted
+
+- name: kill-pulseaudio
+  command: killall pulseaudio

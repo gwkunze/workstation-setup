@@ -13,6 +13,19 @@
     - msttcorefonts
     - fzf
 
+- name: Make my Bose Headphones work
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - pulseaudio-module-bluetooth
+    - pavucontrol
+    - bluez-firmware
+  notify:
+    - restart-bluetooth
+    - kill-pulseaudio
+
+
 - name: Install pip packages
   pip:
     name: "{{ item }}"
